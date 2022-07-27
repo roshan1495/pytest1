@@ -1,7 +1,44 @@
+name: 'sonar-validation'
+
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'backend/**'
 
   workflow_dispatch:
+  
+permissions:
+  contents: 'read'
+  packages: 'write'
+  
+jobs:
+  Build-unittest:
+    name: InitialCheckout
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis              
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install --no-cache-dir -r requirements.txt
+      - name: PyTest for Unit testing
+        run: |
+          echo "Running pytest"
+          python -m pytest ${GITHUB_WORKSPACE}/tests/ \
+          --doctest-modules \
+          --junitxml=junit/unittest-3.9.xml \
+          --cov=. \
+          --cov-report=xml:coverage-3.9.xml \
+          --cov-report=html:coverage_report-3.9 \
+          --cov-report term-missing
+          
+      - name: Sonarcloud scan
+        # upload the coverage report for 3.8,  to reduce the duplication.
+        uses: SonarSource/sonarcloud-github-action@v1.6
+        env:
+          GITHUB_TOKEN: ${{ env.GIT_TOKEN }}
+          SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
+          
