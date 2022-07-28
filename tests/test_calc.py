@@ -8,5 +8,5 @@ def test_sub_func():
     assert sub(1,2) == 1
     assert sub(1,10) != 8
 
-# def test_mul_func():
-#     assert mul(1,2) == 2
+def test_mul_func():
+    assert mul(1,2) == 2
