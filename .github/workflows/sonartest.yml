@@ -34,7 +34,7 @@ jobs:
           python -m pytest ${GITHUB_WORKSPACE}/tests/ \
           --doctest-modules \
           --junitxml=junit/unittest-3.9.xml \
-          --cov=. \
+          --cov=src/ \
           --cov-report=xml:coverage-3.9.xml \
           --cov-report=html:coverage_report-3.9 \
           --cov-report term-missing
