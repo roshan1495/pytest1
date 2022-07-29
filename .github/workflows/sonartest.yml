@@ -1,12 +1,12 @@
 name: 'sonar-validation'
 
 on:
-
- push:
-    branches: [ main ]
-    types: [ opened, edited, reopened, synchronize ]
-
- workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+    
+  workflow_dispatch:
   
 permissions:
   contents: 'read'
