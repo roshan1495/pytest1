@@ -16,10 +16,14 @@ jobs:
   Build-unittest:
     name: InitialCheckout
     runs-on: ubuntu-latest
+    env:
+      ENV: DEV
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis              
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Display env
+        run: env
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
